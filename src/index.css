@@ -1,0 +1,455 @@
+#root {
+  width: 100vw; /* 100% of the viewport width */
+  height: 100vh; /* 100% of the viewport height */
+  overflow: auto; /* Add scrollbars if the content overflows */
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.map-container {
+  height: 89vh;
+  width: 100%;
+}
+
+.ar-scene {
+  top: 0;
+  left: 0;
+  padding-top: 70px;
+}
+
+.marker {
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+.pin {
+  width: 30px;
+  height: 30px;
+  background-color: red;
+  border-radius: 50%;
+}
+
+.text {
+  white-space: nowrap;
+  padding: 5px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.popup {
+  position: absolute;
+  top: -50px;
+  left: -100px;
+  width: 200px;
+  height: 100px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.marker-list {
+  display: flex;
+  overflow-x: auto; /* Enable horizontal scrolling */
+  overflow-y: hidden; /* Disable vertical scrolling */
+  white-space: nowrap;
+  padding: 5px;
+  border-radius: 5px;
+  max-width: 80%; /* Adjust the maximum width as needed */
+  justify-content: flex-start; /* Align items to the start of the container */
+  position: fixed;
+  bottom: 80px; /* Move the list to the bottom with some spacing */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+}
+
+.marker-item {
+  display: flex; /* Use flexbox to create a row layout */
+  align-items: center; /* Align items vertically */
+  margin-right: 10px;
+  min-width: 300px; /* Adjust the minimum width as needed */
+  cursor: pointer;
+  background-color: #ffffff;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 22px;
+  border: 5px solid black;
+}
+
+.marker-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  background-color: #008CBA; /* Set the background color to blue with an alpha value (0.5 for semi-transparent blue) */
+}
+
+.marker-details {
+  flex: 1;
+  border: 2px solid black;
+  padding: 8px;
+  height: 80px;
+}
+
+.marker-details h3 {
+  margin: 0;
+  margin-bottom: 8px;
+}
+
+.marker-details p {
+  margin: 0;
+}
+
+.selected-marker-popup {
+  position: absolute;
+  top: 60px;
+  left: 10px;
+  background-color: #fff;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  z-index: 1;
+}
+
+.center-button {
+  position: absolute;
+  top: 60px;
+  right: 75px;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  z-index: 1;
+}
+
+.center-button:hover {
+  background-color: #f1f1f1;
+}
+
+.arjs-loader {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.arjs-loader div {
+  text-align: center;
+  font-size: 1.25em;
+  color: white;
+}
+
+.mapbutton {
+  border: none;
+  padding: 15px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-flex;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  background-color: #008CBA;
+  width: 32%;
+}
+
+.arbutton {
+  border: none;
+  padding: 15px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-flex;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  background-color: #008CBA;
+  width: 32%;
+}
+
+.gallerybutton {
+  border: none;
+  padding: 15px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-flex;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  background-color: #008CBA;
+  width: 32%;
+}
+
+.star-rating {
+  display: flex;
+  align-items: center;
+}
+
+.star-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+}
+
+.partial-star {
+  position: relative;
+}
+
+.partial-star::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%; /* Adjust the width to control the amount of the star that appears filled */
+  height: 100%;
+  background-image: url('../public/images/filled-star.png'); /* Set the same background image as the star icon */
+  background-size: cover; /* Scale the background image to cover the clipped part */
+  z-index: 1; /* Make sure the partial star appears above the original star icon */
+  background-clip: content-box;
+  border-right: 1px solid transparent; /* Add a transparent border to clip the background */
+}
+
+.category-details{
+  font-size: small;
+}
+
+.subcategory-details{
+  font-size: small;
+}
+
+.header {
+  position: fixed;
+  width: 100%;
+  height: 55px;
+  top: 0;
+  z-index: 1001; /* Ensure the header is above other elements */
+  background-color: white;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  position: relative; /* Add this line */
+}
+
+
+.logo {
+  display: flex;
+  height: 45px;
+  position: fixed;
+  justify-content: center;
+  left: 50%;
+}
+
+.logo img {
+  width: 100px; /* Adjust as needed */
+  height: auto; /* This will maintain the aspect ratio of the image */
+}
+
+
+.menu-button {
+  cursor: pointer;
+  display: flex;
+  height: 45px;
+  justify-content: flex-end;
+  position: fixed;
+  left: 95%;
+}
+
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 3;
+  top: 0;
+  right: 0;
+  background-color: #008CBA;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+.closebtn {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0,0,0,0.5); /* semi-transparent background */
+  z-index: 2;
+  display: none; /* initially hidden */
+  justify-content: center;
+  align-items: center;
+  font-size: 36px;
+  color: white;
+  cursor: pointer;
+}
+
+.sidenav.open ~ .closebtn {
+  display: flex; /* shown when .sidenav is open */
+}
+
+
+
+#overlay {
+  position: fixed;
+  display: none;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 2;
+  cursor: pointer;
+}
+
+.sidenav.open {
+  width: 30%;
+}
+
+#overlay.open {
+  display: block;
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #f8f9fa00;
+  color: white;
+  text-align: center;
+  padding: 0px 0;
+}
+
+.arbutton {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #008CBA;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.arbutton img {
+  width: 50px;
+  height: 50px;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.mapbutton {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #008CBA;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.mapbutton img {
+  width: 50px;
+  height: 50px;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.gallerybutton {
+  display: inline-block;
+  padding: 10px 0px;
+  background-color: #008CBA;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.gallerybutton img {
+  width: 50px;
+  height: 50px;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.category-header {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  background: #008CBA;
+  border: none;
+  text-align: center;
+  outline: none;
+  color: #ffffff;
+  transition: 0.3s;
+  font-size: 20px;
+}
+.category-button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  background: #008CBA;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+  color: #ffffff;
+  transition: 0.3s;
+  font-size: 26px;
+}
+
+.category-button:hover {
+  background: #007bff;
+  color: #fff;
+}
+.category-button img {
+  height: 1em;
+  margin-right: 10px;
+}
